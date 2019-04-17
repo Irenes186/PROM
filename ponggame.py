@@ -31,8 +31,11 @@ def print_at(r, c, s):
         c = s.encode("windows-1252")
         windll.kernel32.WriteConsoleA(h, c_char_p(c), len(c), None, None)
     elif platform.system() == "Linux":
-        serialPort.write(u"\033[" + r + ";" + c + "H" + s);
+        serialPort.write(u"\033[" + str(r) + ";" + str(c) + "H" + str(s));
 
+def setColor(code):
+    if platform.system() == "Linux":
+        serialPort.write(u"\033[" + str(code) + "m")
 
 class Point:
     def __init__(self, x, y):
@@ -68,6 +71,8 @@ class Score:
     def draw(self):
         for y in range(5):
             print_at(self.position.y + y, self.position.x, constants.DIGITS[self.value][y])
+
+setColor(31)
 
 b1 = Bat(3, 3)
 b2 = Bat(77, 3)
