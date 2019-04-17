@@ -31,7 +31,7 @@ def print_at(r, c, s):
         c = s.encode("windows-1252")
         windll.kernel32.WriteConsoleA(h, c_char_p(c), len(c), None, None)
     elif platform.system() == "Linux":
-        serialPort.write(u"\033[" + str(r) + ";" + str(c) + "H" + str(s));
+        serialPort.write(u"\033[" + str(r+1) + ";" + str(c) + "H" + str(s));
 
 def setColor(code):
     if platform.system() == "Linux":
