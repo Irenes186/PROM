@@ -2,10 +2,7 @@ import serialprint
 import debugdisplay
 import constants
 import os 
-
-rows = 24 
-columns = 80 
-serves = 0 
+import time
 
 class Point:
     def __init__(self, x, y):
@@ -45,20 +42,38 @@ class Score:
 class Ball:   
     def __init__(self, x, y):
         self.position = Point(x, y)
-        self.velocity = Point(1.0, 1, 1)
-    def draw(self):
-        if serves < 6: #left player starts
+        self.velocity = Point(1, 1)
+     
+    def updatedraw(self):
+
+        # Collide with the wall/sides
+        if ball.position.x >= constants.columns:
+            ball.velocity.x = -1
+        if ball.position.x <= 0:
+            ball.velocity.x = 1
+        if ball.position.y >= constants.rows:
+           ball.velocity.y = -1
+        if ball.position.y <= 0:
+           ball.velocity.y = 1
+
+           
+        serialprint.print_at(self.position.y, self.position.x, " ")
+
+        self.position.x += self.velocity.x
+        self.position.y += self.velocity.y
+
+        serialprint.print_at(self.position.y, self.position.x, "o")
+
+        #if constants.serves < 6: #left player starts
             # x would be 4 rows across
             # y would be xpos + 5
-            serialprint.print(b1.position.y + (0.5*b1.length) , 4, ".")
-        else: #right player starts
-            serialprint.print_at(b2.position.y + (0.5*b2.length), columns - 8, ".")
-    
-        
-       
-   
-serialprint.setColor(31)
+            #serialprint.print_at(b1.position.y + (0.5*b1.length), 4, "o")
+        #else: #right player starts
+            #serialprint.print_at(b2.position.y + (0.5*b2.length), columns - 8,
+            #"o")
 
+   
+#serialprint.setColor(31)
 
 
 b1 = Bat(3, 3)
@@ -75,21 +90,9 @@ s2 = Score(1, 49, 1)
 #s1.draw()
 #s2.draw()
 
-#collision with any of the 4 walls
-def collision_with_wall(ball):
-    if ball.position.x == rows:
-        ball.velocity.x = -1
-    if ball.position.x == 0:
-        ball.velocity.x = 1
-    if ball.position.y == columns:
-       ball.velocity.y = -1
-    if ball.position.y == 0:
-       ball.velocity.y = 1
-    return ball.velocity
-
-
-debugdisplay.printHardwareDebugHeader()
-debugdisplay.printHardwareDisplay(1.5, 0, 1, 10, 3, 3, 0, 0, 10, 6)
-
+#debugdisplay.printHardwareDebugHeader()
+#debugdisplay.printHardwareDisplay(1.5, 0, 1, 10, 3, 3, 0, 0, 10, 6)
 while True:
-    pass
+    
+    ball.updatedraw()
+    time.sleep(0.1)

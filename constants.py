@@ -1,3 +1,6 @@
+rows = 24 
+columns = 80 
+serves = 0 
 
 DIGITS = [
     [
