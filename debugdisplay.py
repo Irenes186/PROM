@@ -1,7 +1,7 @@
 import serialprint
 
 def printHardwareDebugHeader():
-    print("\f")
+    print("\033[2J")
     serialprint.print_at(1, 1, "Diagnostic Information:",)
     serialprint.print_at(2, 1, "| A ADC | A1 | A2 | Bat Pos | Size |")
     serialprint.print_at(3, 1, "|----------------------------------|")
