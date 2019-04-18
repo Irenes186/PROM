@@ -24,7 +24,7 @@ DIGITS = [
     [
         "XXX",
         "  X",
-        "XXX",
+        " XX",
         "  X",
         "XXX",
     ],
@@ -44,7 +44,7 @@ DIGITS = [
     ],
     [
         "XXX",
-        "  X",
+        "X  ",
         "XXX",
         "X X",
         "XXX",
