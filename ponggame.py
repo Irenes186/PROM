@@ -1,4 +1,5 @@
 import serialprint
+import debugdisplay
 import constants
 
 class Point:
