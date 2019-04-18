@@ -44,13 +44,15 @@ class Ball:
         self.position = Point(x, y)
         self.velocity = Point(1, 1)
      
-    def updatedraw(self):
+    def updatedraw(self, s1, s2):
 
         # Collide with the wall/sides
         if ball.position.x >= constants.columns:
             ball.velocity.x = -1
+            s1.value += 1
         if ball.position.x <= 0:
             ball.velocity.x = 1
+            s2.value += 1
         if ball.position.y >= constants.rows:
            ball.velocity.y = -1
         if ball.position.y <= 0:
@@ -84,15 +86,15 @@ ball = Ball(40 , 6)
 s1 = Score(7, 29, 1)
 s2 = Score(1, 49, 1)
 
-#b1.draw()
-#b2.draw()
-#net.draw()
-#s1.draw()
-#s2.draw()
-
 #debugdisplay.printHardwareDebugHeader()
 #debugdisplay.printHardwareDisplay(1.5, 0, 1, 10, 3, 3, 0, 0, 10, 6)
 while True:
     
-    ball.updatedraw()
+    b1.draw()
+    b2.draw()
+    net.draw()
+    s1.draw()
+    s2.draw()
+
+    ball.updatedraw(s1, s2)
     time.sleep(0.1)
