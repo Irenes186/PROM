@@ -46,11 +46,14 @@ net = Net(40, 24)
 s1 = Score(7, 29, 1)
 s2 = Score(1, 49, 1)
 
-b1.draw()
-b2.draw()
-net.draw()
-s1.draw()
-s2.draw()
+#b1.draw()
+#b2.draw()
+#net.draw()
+#s1.draw()
+#s2.draw()
+
+debugdisplay.printHardwareDebugHeader()
+debugdisplay.printHardwareDisplay(1.5, 0, 1, 10, 3, 3, 0, 0, 10, 6)
 
 while True:
     pass
