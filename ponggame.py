@@ -3,7 +3,6 @@ import os
 import platform
 import constants
 
-
 if platform.system() == "Linux":
     from serial import Serial
 
@@ -33,6 +32,7 @@ def print_at(r, c, s):
     elif platform.system() == "Linux":
         serialPort.write(u"\033[" + str(r+1) + ";" + str(c) + "H" + str(s));
 
+# Colour only works on linux
 def setColor(code):
     if platform.system() == "Linux":
         serialPort.write(u"\033[" + str(code) + "m")
