@@ -1,16 +1,10 @@
 import serialprint
 import debugdisplay
 import constants
-import os 
+import inputs
+
 import time
 from math import ceil
-
-# Game States
-STATE_IN_PLAY = 0
-STATE_SERVE = 1
-
-# Which player is serving/ last served
-PLAYER_SERVE = 1
 
 class Point:
     def __init__(self, x, y):
@@ -54,23 +48,25 @@ class Ball:
         self.position = Point(x, y)
         self.velocity = Point(2, 1)
 
-    def draw(self):
+    def erase(self):
         serialprint.print_at(self.lastposition.y, self.lastposition.x, " ")
+    def draw(self):
         serialprint.print_at(self.position.y, self.position.x, "o")
-   
+ 
+        
 bat1 = Bat(3, 3)
 bat2 = Bat(77, 3)
-net = Net(40, 24)
+net = Net(ceil(constants.COLUMNS / 2), constants.ROWS + 1)
 ball = Ball(40 , 6)
 
-score1 = Score(29, 1, 0)
-score2 = Score(49, 1, 0)
+score1 = Score(29, 2, 0)
+score2 = Score(49, 2, 0)
 
-#debugdisplay.printHardwareDebugHeader()
-#debugdisplay.printHardwareDisplay(1.5, 0, 1, 10, 3, 3, 0, 0, 10, 6)
+# Which player is serving/ last served
+PLAYER_SERVE = 1
 GameState = STATE_IN_PLAY
 
-# Sets up the ball for serving
+# Moves the ball while a player is serving
 def update_serve():
     if PLAYER_SERVE == 1:
         ball.position = Point(bat1.position.x + 1, bat2.position.y + ceil(bat2.length / 2))
@@ -79,7 +75,7 @@ def update_serve():
 
 def update_game():
     # Collide with the sides
-    if ball.position.x >= constants.columns:
+    if ball.position.x >= constants.COLUMNS:
         ball.velocity.x *= -1
         score1.value += 1
     elif ball.position.x <= 0:
@@ -87,7 +83,7 @@ def update_game():
         score2.value += 1
 
     # Collide with the ceiling/floor
-    if ball.position.y >= constants.rows or ball.position.y <= 0:
+    if ball.position.y >= constants.ROWS or ball.position.y <= 0:
         ball.velocity.y *= -1
 
     if ball.position.x == bat1.position.x + 1:
@@ -102,12 +98,15 @@ def update_game():
     ball.position.y += ball.velocity.y
 
 def draw():
-    ball.draw()
+    ball.erase()
     bat1.draw()
     bat2.draw()
     net.draw()
     score1.draw()
     score2.draw()
+    ball.draw()
+
+
 
 while True:
 
@@ -116,6 +115,11 @@ while True:
     elif GameState == STATE_SERVE:
         update_serve()
 
+    inputs.update(bat1, bat2, GameState)
+
     draw()
+
+#debugdisplay.printHardwareDebugHeader()
+#debugdisplay.printHardwareDisplay(1.5, 0, 1, 10, 3, 3, 0, 0, 10, 6)
 
     time.sleep(0.1)

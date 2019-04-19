@@ -1,6 +1,9 @@
-rows = 24 
-columns = 80 
-serves = 0 
+STATE_IN_PLAY = 0
+STATE_SERVE = 1
+
+ROWS = 24 
+COLUMNS = 80 
+SERVES = 5
 
 DIGITS = [
     [
