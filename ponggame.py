@@ -3,6 +3,14 @@ import debugdisplay
 import constants
 import os 
 import time
+from math import ceil
+
+# Game States
+STATE_IN_PLAY = 0
+STATE_SERVE = 1
+
+# Which player is serving/ last served
+PLAYER_SERVE = 1
 
 class Point:
     def __init__(self, x, y):
@@ -31,70 +39,83 @@ class Net:
 
 class Score:
 
-    def __init__(self, val, x, y):
+    def __init__(self, x, y, val):
         self.position = Point(x, y)
         self.value = val
 
     def draw(self):
+        self.value = abs(self.value % 10)
         for y in range(5):
             serialprint.print_at(self.position.y + y, self.position.x, constants.DIGITS[self.value][y])
          
 class Ball:   
     def __init__(self, x, y):
+        self.lastposition = Point(x, y)
         self.position = Point(x, y)
-        self.velocity = Point(1, 1)
-     
-    def updatedraw(self, s1, s2):
+        self.velocity = Point(2, 1)
 
-        # Collide with the wall/sides
-        if ball.position.x >= constants.columns:
-            ball.velocity.x = -1
-            s1.value += 1
-        if ball.position.x <= 0:
-            ball.velocity.x = 1
-            s2.value += 1
-        if ball.position.y >= constants.rows:
-           ball.velocity.y = -1
-        if ball.position.y <= 0:
-           ball.velocity.y = 1
-
-           
-        serialprint.print_at(self.position.y, self.position.x, " ")
-
-        self.position.x += self.velocity.x
-        self.position.y += self.velocity.y
-
+    def draw(self):
+        serialprint.print_at(self.lastposition.y, self.lastposition.x, " ")
         serialprint.print_at(self.position.y, self.position.x, "o")
-
-        #if constants.serves < 6: #left player starts
-            # x would be 4 rows across
-            # y would be xpos + 5
-            #serialprint.print_at(b1.position.y + (0.5*b1.length), 4, "o")
-        #else: #right player starts
-            #serialprint.print_at(b2.position.y + (0.5*b2.length), columns - 8,
-            #"o")
-
    
-#serialprint.setColor(31)
-
-
-b1 = Bat(3, 3)
-b2 = Bat(77, 3)
+bat1 = Bat(3, 3)
+bat2 = Bat(77, 3)
 net = Net(40, 24)
 ball = Ball(40 , 6)
 
-s1 = Score(7, 29, 1)
-s2 = Score(1, 49, 1)
+score1 = Score(29, 1, 0)
+score2 = Score(49, 1, 0)
 
 #debugdisplay.printHardwareDebugHeader()
 #debugdisplay.printHardwareDisplay(1.5, 0, 1, 10, 3, 3, 0, 0, 10, 6)
-while True:
-    
-    b1.draw()
-    b2.draw()
-    net.draw()
-    s1.draw()
-    s2.draw()
+GameState = STATE_IN_PLAY
 
-    ball.updatedraw(s1, s2)
+# Sets up the ball for serving
+def update_serve():
+    if PLAYER_SERVE == 1:
+        ball.position = Point(bat1.position.x + 1, bat2.position.y + ceil(bat2.length / 2))
+    elif PLAYER_SERVE == 2:
+        ball.position = Point(bat2.position.x - 1, bat1.position.y + ceil(bat1.length / 2))
+
+def update_game():
+    # Collide with the sides
+    if ball.position.x >= constants.columns:
+        ball.velocity.x *= -1
+        score1.value += 1
+    elif ball.position.x <= 0:
+        ball.velocity.x *= -1
+        score2.value += 1
+
+    # Collide with the ceiling/floor
+    if ball.position.y >= constants.rows or ball.position.y <= 0:
+        ball.velocity.y *= -1
+
+    if ball.position.x == bat1.position.x + 1:
+        if ball.position.y >= bat1.position.y and ball.position.y <= (bat1.position.y + bat1.length):
+            ball.velocity.x *= -1
+    elif ball.position.x == bat2.position.x - 1:
+        if ball.position.y >= bat2.position.y and ball.position.y <= (bat2.position.y + bat2.length):
+            ball.velocity.x *= -1
+
+    ball.lastposition = Point(ball.position.x, ball.position.y)
+    ball.position.x += ball.velocity.x
+    ball.position.y += ball.velocity.y
+
+def draw():
+    ball.draw()
+    bat1.draw()
+    bat2.draw()
+    net.draw()
+    score1.draw()
+    score2.draw()
+
+while True:
+
+    if GameState == STATE_IN_PLAY:
+        update_game()
+    elif GameState == STATE_SERVE:
+        update_serve()
+
+    draw()
+
     time.sleep(0.1)
