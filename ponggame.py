@@ -26,8 +26,8 @@ class Net:
 
      def draw(self):
         for y in range(0, self.length, 4):
-            serialprint.print_at(y,   self.x, "X")
-            serialprint.print_at(y+1, self.x, "X")
+            serialprint.print_at(y,   self.x, "|")
+            serialprint.print_at(y+1, self.x, "|")
 
 class Score:
     def __init__(self, x, y, val):
@@ -116,4 +116,4 @@ while True:
 
     draw()
 
-    time.sleep(0.1)
+    time.sleep(0.05#)
