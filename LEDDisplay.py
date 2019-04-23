@@ -17,6 +17,6 @@ for i in range(0, len(pin_list)):
 
 for i in range(0, len(pin_list)):
     GPIO.output(pin_list[i], True)
-    time.sleep(0.375)
+    time.sleep(1)
 
     GPIO.output(pin_list[i], False)
