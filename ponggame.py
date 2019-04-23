@@ -26,7 +26,7 @@ class Net:
 
      def draw(self):
         for y in range(0, self.length, 4):
-            serialprint.print_at(y, self.x, "X")
+            serialprint.print_at(y,   self.x, "X")
             serialprint.print_at(y+1, self.x, "X")
 
 class Score:
@@ -67,7 +67,7 @@ def update_game():
         score2.value += 1
 
     # Collide with the ceiling/floor
-    if ball.position.y >= constants.ROWS or ball.position.y <= 0:
+    if ball.position.y >= constants.ROWS - 1 or ball.position.y <= 0:
         ball.velocity.y *= -1
 
     if ball.position.x == bat1.position.x + 1 and ball.velocity.x < 0:
@@ -94,7 +94,7 @@ def draw():
 
 bat1 = Bat(3, 3)
 bat2 = Bat(77, 3)
-net = Net(ceil(constants.COLUMNS / 2), constants.ROWS + 1)
+net = Net(int(ceil(constants.COLUMNS / 2)), constants.ROWS + 1)
 ball = Ball(40 , 6)
 
 score1 = Score(29, 2, 0)
