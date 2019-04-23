@@ -6,7 +6,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 #to be changed with the actual value
-pin_list = [11,12, 13, 14, 15, 16, 17, 18]
+pin_list = [12, 13, 18]
 #the following pins will be used as outputs
 
 for i in range(0, len(pin_list)):
