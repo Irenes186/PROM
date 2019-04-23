@@ -10,6 +10,8 @@ if platform.system() == "Linux":
     if serialPort.isOpen() == False:
         serialPort.open()
 
+    serialPort.write("\033[2J")
+
 
 # Windows stuff
 STD_OUTPUT_HANDLE = -11
