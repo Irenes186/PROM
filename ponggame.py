@@ -73,7 +73,7 @@ def update_game():
     if ball.position.x == bat1.position.x + 1 and ball.velocity.x < 0:
         if ball.position.y >= bat1.position.y and ball.position.y <= (bat1.position.y + bat1.length):
             ball.velocity.x *= -1
-    elif ball.position.x == bat2.position.x - 1 and ball.velocity.x < 0:
+    elif ball.position.x == bat2.position.x - 1 and ball.velocity.x > 0:
         if ball.position.y >= bat2.position.y and ball.position.y <= (bat2.position.y + bat2.length):
             ball.velocity.x *= -1
 
