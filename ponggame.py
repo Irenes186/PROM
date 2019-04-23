@@ -111,7 +111,7 @@ while True:
 
     if GameState == constants.STATE_IN_PLAY:
         update_game()
-    elif GameState == STATE_SERVE:
+    elif GameState == constants.STATE_SERVE:
         update_serve()
 
     draw()
