@@ -21,7 +21,7 @@ GPIO.setup(pin_list[7], GPIO.OUT)
 #turns on a LED every 3 seconds/ 8 LEDs time
 
 for i in range(0, len(pin_list)):
-    GPIO.output(pin_list[i], GPIO.HIGH)
+    GPIO.output(pin_list[i], True)
     time.sleep(0.375)
 
-    GPIO.output(pin_list[i], GPIO.LOW)
+    GPIO.output(pin_list[i], False)
