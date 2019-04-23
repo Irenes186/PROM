@@ -28,11 +28,12 @@ def print_at(r, c, s, CONSOLE=False):
  
         c = s.encode("windows-1252")
         windll.kernel32.WriteConsoleA(h, c_char_p(c), len(c), None, None)
-    elif platform.system() == "Linux":
+    # Linux, Hopefully also works on mac?
+    else:
         if CONSOLE:
-            serialPort.write(u"\033[" + str(r+1) + ";" + str(c) + "H" + str(s))
-        else:
             print(u"\033[" + str(r+1) + ";" + str(c) + "H" + str(s))
+        else:
+            serialPort.write(u"\033[" + str(r+1) + ";" + str(c) + "H" + str(s))
 
 # Colour only works on linux
 def setColor(code):

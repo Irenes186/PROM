@@ -1,5 +1,4 @@
 import serialprint
-import debugdisplay
 import constants
 import inputs
 
@@ -12,7 +11,6 @@ class Point:
         self.y = y
 
 class Bat:
-   
     def __init__(self, xpos, length):
         self.position = Point(xpos, 10)
         self.length = length
@@ -22,17 +20,16 @@ class Bat:
             serialprint.print_at(y, self.position.x, "X")
 
 class Net:
-
      def __init__(self, x, length):
         self.x = x
         self.length = length
 
      def draw(self):
-        for y in range(self.length):
+        for y in range(0, self.length, 4):
             serialprint.print_at(y, self.x, "X")
+            serialprint.print_at(y+1, self.x, "X")
 
 class Score:
-
     def __init__(self, x, y, val):
         self.position = Point(x, y)
         self.value = val
@@ -52,19 +49,6 @@ class Ball:
         serialprint.print_at(self.lastposition.y, self.lastposition.x, " ")
     def draw(self):
         serialprint.print_at(self.position.y, self.position.x, "o")
- 
-        
-bat1 = Bat(3, 3)
-bat2 = Bat(77, 3)
-net = Net(ceil(constants.COLUMNS / 2), constants.ROWS + 1)
-ball = Ball(40 , 6)
-
-score1 = Score(29, 2, 0)
-score2 = Score(49, 2, 0)
-
-# Which player is serving/ last served
-PLAYER_SERVE = 1
-GameState = STATE_IN_PLAY
 
 # Moves the ball while a player is serving
 def update_serve():
@@ -86,16 +70,17 @@ def update_game():
     if ball.position.y >= constants.ROWS or ball.position.y <= 0:
         ball.velocity.y *= -1
 
-    if ball.position.x == bat1.position.x + 1:
+    if ball.position.x == bat1.position.x + 1 and ball.velocity.x < 0:
         if ball.position.y >= bat1.position.y and ball.position.y <= (bat1.position.y + bat1.length):
             ball.velocity.x *= -1
-    elif ball.position.x == bat2.position.x - 1:
+    elif ball.position.x == bat2.position.x - 1 and ball.velocity.x < 0:
         if ball.position.y >= bat2.position.y and ball.position.y <= (bat2.position.y + bat2.length):
             ball.velocity.x *= -1
 
     ball.lastposition = Point(ball.position.x, ball.position.y)
     ball.position.x += ball.velocity.x
     ball.position.y += ball.velocity.y
+
 
 def draw():
     ball.erase()
@@ -107,19 +92,28 @@ def draw():
     ball.draw()
 
 
+bat1 = Bat(3, 3)
+bat2 = Bat(77, 3)
+net = Net(ceil(constants.COLUMNS / 2), constants.ROWS + 1)
+ball = Ball(40 , 6)
+
+score1 = Score(29, 2, 0)
+score2 = Score(49, 2, 0)
+
+# Which player is serving/ last served
+PLAYER_SERVE = 1
+GameState = constants.STATE_IN_PLAY
+
+inputs.init()
 
 while True:
+    inputs.update(bat1, bat2, GameState)
 
-    if GameState == STATE_IN_PLAY:
+    if GameState == constants.STATE_IN_PLAY:
         update_game()
     elif GameState == STATE_SERVE:
         update_serve()
 
-    inputs.update(bat1, bat2, GameState)
-
     draw()
-
-#debugdisplay.printHardwareDebugHeader()
-#debugdisplay.printHardwareDisplay(1.5, 0, 1, 10, 3, 3, 0, 0, 10, 6)
 
     time.sleep(0.1)
