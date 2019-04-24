@@ -1,6 +1,7 @@
 import serialprint
 import constants
 import inputs
+import LEDDisplay
 
 import time
 from math import ceil
@@ -105,15 +106,18 @@ PLAYER_SERVE = 1
 GameState = constants.STATE_IN_PLAY
 
 inputs.init()
+LEDDisplay.init()
+
 
 while True:
-    inputs.update(bat1, bat2, GameState)
-
+    #inputs.update(bat1, bat2, GameState)
+	
     if GameState == constants.STATE_IN_PLAY:
         update_game()
+        LEDDisplay.update(GameState, ball.position.x)
     elif GameState == constants.STATE_SERVE:
         update_serve()
-
+	#LEDDisplay.update(GameState)
     draw()
 
     time.sleep(0.05)
