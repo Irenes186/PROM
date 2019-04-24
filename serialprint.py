@@ -2,24 +2,25 @@ from ctypes import *
 import os
 import platform
 
-if platform.system() == "Linux":
-    from serial import Serial
+def init():
+    if platform.system() == "Linux":
+        from serial import Serial
 
-    serialPort = Serial("/dev/ttyAMA0", 115200)
+        serialPort = Serial("/dev/ttyAMA0", 115200)
 
-    if serialPort.isOpen() == False:
-        serialPort.open()
+        if serialPort.isOpen() == False:
+            serialPort.open()
 
-    serialPort.write("\033[2J")
+        serialPort.write("\033[2J")
 
+    elif platform.system() == "Windows":
+        # Windows stuff
+        STD_OUTPUT_HANDLE = -11
 
-# Windows stuff
-STD_OUTPUT_HANDLE = -11
-
-class COORD(Structure):
-    pass
-COORD._fields_ = [("X", c_short), ("Y", c_short)]
-# End windows stuff
+        class COORD(Structure):
+            pass
+        COORD._fields_ = [("X", c_short), ("Y", c_short)]
+        # End windows stuff
 
 # This is for windows console
 # On Pi replace with ANSI escape sequence, where "\033[y;xH" moves the cursor to row y col x.

@@ -2,6 +2,7 @@ import serialprint
 import constants
 import inputs
 import LEDDisplay
+import PiGlow
 
 import time
 from math import ceil
@@ -58,14 +59,16 @@ def update_serve():
     elif PLAYER_SERVE == 2:
         ball.position = Point(bat2.position.x - 1, bat1.position.y + ceil(bat1.length / 2))
 
-def update_game():
+def update_game(GameState):
     # Collide with the sides
     if ball.position.x >= constants.COLUMNS:
         ball.velocity.x *= -1
         score1.value += 1
+        PiGlow.blueWin()
     elif ball.position.x <= 0:
         ball.velocity.x *= -1
         score2.value += 1
+        PiGlow.redWin()
 
     # Collide with the ceiling/floor
     if ball.position.y >= constants.ROWS - 1 or ball.position.y <= 0:
@@ -111,19 +114,20 @@ score2 = Score(49, 2, 0)
 PLAYER_SERVE = 1
 GameState = constants.STATE_IN_PLAY
 
+serialprint.init()
 inputs.init()
 LEDDisplay.init()
-
 
 while True:
     #inputs.update(bat1, bat2, GameState)
 	
     if GameState == constants.STATE_IN_PLAY:
         update_game()
-        LEDDisplay.update(GameState, ball.position.x)
+
     elif GameState == constants.STATE_SERVE:
         update_serve()
-	#LEDDisplay.update(GameState)
+
     draw()
+    LEDDisplay.update(GameState, ball.position.x)
 
     time.sleep(0.05)
