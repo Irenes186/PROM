@@ -19,7 +19,7 @@ class Bat:
         
     def draw(self):
         for y in range(self.position.y, self.position.y + self.length):
-            serialprint.print_at(y, self.position.x, "X")
+            serialprint.print_at(y, self.position.x, " ")
 
 class Net:
      def __init__(self, x, length):
@@ -59,7 +59,7 @@ def update_serve():
     elif PLAYER_SERVE == 2:
         ball.position = Point(bat2.position.x - 1, bat1.position.y + ceil(bat1.length / 2))
 
-def update_game(GameState):
+def update_game():
     # Collide with the sides
     if ball.position.x >= constants.COLUMNS:
         ball.velocity.x *= -1
@@ -89,12 +89,14 @@ def update_game(GameState):
 def draw():
     ball.erase()
 
-    serialprint.setColor(constants.COLOURS["Blue"])
+    serialprint.setColor(constants.COLOURS["BlueBat"])
     bat1.draw()
+    serialprint.setColor(constants.COLOURS["BlueScore"])
     score1.draw()
 
-    serialprint.setColor(constants.COLOURS["Red"])
+    serialprint.setColor(constants.COLOURS["RedBat"])
     bat2.draw()
+    serialprint.setColor(constants.COLOURS["RedScore"])
     score2.draw()
 
     serialprint.setColor(constants.COLOURS["Reset"])
@@ -114,7 +116,6 @@ score2 = Score(49, 2, 0)
 PLAYER_SERVE = 1
 GameState = constants.STATE_IN_PLAY
 
-serialprint.init()
 inputs.init()
 LEDDisplay.init()
 
