@@ -5,6 +5,12 @@ ROWS = 24
 COLUMNS = 80 
 SERVES = 5
 
+COLOURS = {
+    "Blue": 44,
+    "Red": 41,
+    "Reset": 0
+}
+
 DIGITS = [
     [
         "XXX",

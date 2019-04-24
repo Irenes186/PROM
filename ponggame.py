@@ -85,11 +85,17 @@ def update_game():
 
 def draw():
     ball.erase()
+
+    serialprint.setColor(constants.COLOURS["Blue"])
     bat1.draw()
-    bat2.draw()
-    net.draw()
     score1.draw()
+
+    serialprint.setColor(constants.COLOURS["Red"])
+    bat2.draw()
     score2.draw()
+
+    serialprint.setColor(constants.COLOURS["Reset"])
+    net.draw()
     ball.draw()
 
 
