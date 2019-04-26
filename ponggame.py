@@ -130,5 +130,5 @@ while True:
 
     draw()
     LEDDisplay.update(GameState, ball.position.x)
-
+	LEDboard.updateboard(GameState, ball.position.x)
     time.sleep(0.05)
