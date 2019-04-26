@@ -2,8 +2,9 @@
 import RPi.GPIO as GPIO
 import time
 import constants
+import math
 
-pin_list = [5, 6, 12, 13, 16, 19, 20, 26]
+pin_list = [5, 6, 12, 13, 16, 19, 20, 26, 26]
 
 def init():
 	print("INIT TEST!!!")
@@ -20,7 +21,7 @@ def init():
 
 	#turns on a LED every 3 seconds/ 8 LEDs time
 """for i in range(0, len(pin_list)):
-    GPIO.output(pin_list[i], True)
+    GPIO.output(pin_list[i], Trint(round(position/10))ue)
     time.sleep(1)
 
     GPIO.output(pin_list[i], False)
@@ -30,20 +31,23 @@ def update(GameState, position):
     for i in range(0, len(pin_list)):
         GPIO.output(pin_list[i], False)
 
-	#print("LEDDisp")
-    if position <= 10 :
-        GPIO.output(pin_list[0], True)
-    elif position > 10 and position <= 20:
-        GPIO.output(pin_list[1], True)
-    elif position > 20 and position <= 30:
-        GPIO.output(pin_list[2], True)
-    elif position > 30 and position <= 40:
-        GPIO.output(pin_list[3], True)
-    elif position > 40 and position <= 50:
-        GPIO.output(pin_list[4], True)
-    elif position > 50 and position <= 60:
-        GPIO.output(pin_list[5], True)
-    elif position > 60 and position <= 70:
-        GPIO.output(pin_list[6], True)
-    else:
-        GPIO.output(pin_list[7], True)
+	position = min(79, position)
+	LED = math.floor(float(position)/10)
+	#print(LED)
+	GPIO.output(pin_list[int(LED)], True)
+    # if position <= 10 :
+    #     GPIO.output(pin_list[0], True)
+    # elif position > 10 and position <= 20:
+    #     GPIO.output(pin_list[1], True)
+    # elif position > 20 and position <= 30:
+    #     GPIO.output(pin_list[2], True)
+    # elif position > 30 and position <= 40:
+    #     GPIO.output(pin_list[3], True)
+    # elif position > 40 and position <= 50:
+    #     GPIO.output(pin_list[4], True)
+    # elif position > 50 and position <= 60:
+    #     GPIO.output(pin_list[5], True)
+    # elif position > 60 and position <= 70:
+    #     GPIO.output(pin_list[6], True)
+    # else:
+    #     GPIO.output(pin_list[7], True)
