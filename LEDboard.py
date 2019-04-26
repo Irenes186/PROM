@@ -6,8 +6,8 @@ LED_OFF = 0xFF
 bus = smbus.SMBus(1)
      
 def updateboard(GameState, position):
-    for i in range(0, len(pin_list)):
-        GPIO.output(pin_list[i], False)
+    for i in range(0, len(I2C_ADD)):
+        bus.write_byte(I2C_ADD[i], LED_OFF)
 
 	#print("LEDDisp")
     if position <= 10 :
