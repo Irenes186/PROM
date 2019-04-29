@@ -36,12 +36,16 @@ class Score:
         self.position = Point(x, y)
         self.value = val
 
-    def draw(self):
+    def draw(self, colour):
         self.value = abs(self.value % 10)
         for y in range(5):
-	    for x in range(3):
-	        if constants.DIGITS[self.value][y][x] == "X":
-            	    serialprint.print_at(self.position.y + y, self.position.x + x, " ")
+            for x in range(3):
+                if constants.DIGITS[self.value][y][x] == "X":
+                    serialprint.setColor(colour)
+                else:
+                    serialprint.setColor(constants.COLOURS["Reset"])
+
+                serialprint.print_at(self.position.y + y, self.position.x + x, " ")
          
 class Ball:   
     def __init__(self, x, y):
@@ -51,7 +55,8 @@ class Ball:
 
     def erase(self):
         serialprint.print_at(self.lastposition.y, self.lastposition.x, " ")
-    def draw(self):
+    def draw(self, colour):
+        serialprint.setColor(colour)
         serialprint.print_at(self.position.y, self.position.x, "o")
 
 # Moves the ball while a player is serving
@@ -91,15 +96,11 @@ def update_game():
 def draw():
     ball.erase()
 
-    serialprint.setColor(constants.COLOURS["BlueBat"])
-    bat1.draw()
-    serialprint.setColor(constants.COLOURS["BlueScore"])
-    score1.draw()
+    bat1.draw(constants.COLOURS["BlueBat"])
+    score1.draw(constants.COLOURS["BlueScore"])
 
-    serialprint.setColor(constants.COLOURS["RedBat"])
-    bat2.draw()
-    serialprint.setColor(constants.COLOURS["RedScore"])
-    score2.draw()
+    bat2.draw(constants.COLOURS["RedBat"])
+    score2.draw(constants.COLOURS["RedScore"])
 
     serialprint.setColor(constants.COLOURS["Reset"])
     net.draw()
