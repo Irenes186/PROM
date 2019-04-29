@@ -39,7 +39,9 @@ class Score:
     def draw(self):
         self.value = abs(self.value % 10)
         for y in range(5):
-            serialprint.print_at(self.position.y + y, self.position.x, constants.DIGITS[self.value][y])
+	    for x in range(3):
+	        if constants.DIGITS[self.value][y][x] == "X":
+            	    serialprint.print_at(self.position.y + y, self.position.x + x, " ")
          
 class Ball:   
     def __init__(self, x, y):
