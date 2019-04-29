@@ -17,8 +17,17 @@ class Bat:
         self.position = Point(xpos, 10)
         self.length = length
         
-    def draw(self):
+    def draw(self, colour):
+        serialprint.setColor(constants.COLOURS["Reset"])
+        for y in range(self.position.y):
+            serialprint.print_at(y, self.position.x, " ")
+
+        serialprint.setColor(colour)
         for y in range(self.position.y, self.position.y + self.length):
+            serialprint.print_at(y, self.position.x, " ")
+
+        serialprint.setColor(constants.COLOURS["Reset"])
+        for y in range(self.position.y + self.length, constants.ROWS):
             serialprint.print_at(y, self.position.x, " ")
 
 class Net:
@@ -53,7 +62,7 @@ class Ball:
         self.position = Point(x, y)
         self.velocity = Point(2, 1)
 
-    def erase(self):
+    def erase(self):  
         serialprint.print_at(self.lastposition.y, self.lastposition.x, " ")
     def draw(self, colour):
         serialprint.setColor(colour)
