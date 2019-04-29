@@ -122,7 +122,7 @@ inputs.init()
 LEDDisplay.init()
 
 while True:
-    #inputs.update(bat1, bat2, GameState)
+    inputs.update(bat1, bat2, GameState)
 	
     if GameState == constants.STATE_IN_PLAY:
         update_game()
@@ -132,5 +132,5 @@ while True:
 
     draw()
     LEDDisplay.update(GameState, ball.position.x)
-	LEDboard.updateboard(GameState, ball.position.x)
+	#LEDboard.updateboard(GameState, ball.position.x)
     time.sleep(0.05)
