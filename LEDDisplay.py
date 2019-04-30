@@ -31,10 +31,10 @@ def update(GameState, position):
     for i in range(0, len(pin_list)):
         GPIO.output(pin_list[i], False)
 
-	position = min(79, position)
-	LED = math.floor(float(position)/10)
+    position = min(79, position)
+    LED = math.floor(float(position)/10)
 	#print(LED)
-	GPIO.output(pin_list[int(LED)], True)
+    GPIO.output(pin_list[int(LED)], True)
     # if position <= 10 :
     #     GPIO.output(pin_list[0], True)
     # elif position > 10 and position <= 20:

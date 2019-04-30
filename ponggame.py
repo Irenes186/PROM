@@ -133,7 +133,7 @@ LEDDisplay.init()
 
 while True:
     inputs.update(bat1, bat2, GameState)
-	
+
     if GameState == constants.STATE_IN_PLAY:
         update_game()
 
