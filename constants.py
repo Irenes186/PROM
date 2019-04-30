@@ -17,6 +17,7 @@ PINS = {
     "Buzzer": 12, # Needs to be a PWM pin
     "7-Seg Low": 0,
     "7-Seg High": 0,
+    "7-Seg Enable": 0,
     "IO Expander SCL": 0,
     "IO Expander SDA": 0,
     }
