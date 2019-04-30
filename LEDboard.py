@@ -16,6 +16,12 @@ while True: #infinite loop
 	time.sleep(0.5) #wait 1/2 sec
 	GPIO.output(10, False) #set pin 10 low
 	time.sleep(0.5) #wait 1/2 sec
+	GPIO.output(11, True) #set pin 10 high
+	time.sleep(0.5) #wait 1/2 sec
+	GPIO.output(11, False) #set pin 10 low
+	time.sleep(0.5) #wait 1/2 sec
+
+
 
   
 def updateBoard(position):
