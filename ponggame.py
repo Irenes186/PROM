@@ -71,20 +71,31 @@ class Ball:
 # Moves the ball while a player is serving
 def update_serve():
     if PLAYER_SERVE == 1:
-        ball.position = Point(bat1.position.x + 1, bat2.position.y + ceil(bat2.length / 2))
-    elif PLAYER_SERVE == 2:
-        ball.position = Point(bat2.position.x - 1, bat1.position.y + ceil(bat1.length / 2))
+        ball.position = Point(bat1.position.x + 1, bat1.position.y + ceil(bat1.length / 2))
+    elif PLAYER_SERVE == -1:
+        ball.position = Point(bat2.position.x - 1, bat2.position.y + ceil(bat2.length / 2))
 
+def setup_serve():
+    servesremaining -= 1
+    if servesremaining == 0:
+        servesremaining = 5
+        player_serving *= -1
+
+    game_state = constants.STATE_SERVE
+    
 def update_game():
     # Collide with the sides
     if ball.position.x >= constants.COLUMNS:
         ball.velocity.x *= -1
         score1.value += 1
         PiGlow.blueWin()
+        setupServe()
+
     elif ball.position.x <= 0:
         ball.velocity.x *= -1
         score2.value += 1
         PiGlow.redWin()
+        setup_serve()
 
     # Collide with the ceiling/floor
     if ball.position.y >= constants.ROWS - 1 or ball.position.y <= 0:
@@ -93,6 +104,11 @@ def update_game():
     if ball.position.x == bat1.position.x + 1 and ball.velocity.x < 0:
         if ball.position.y >= bat1.position.y and ball.position.y <= (bat1.position.y + bat1.length):
             ball.velocity.x *= -1
+
+            # Calculate which 1/3 of the bat was hit, and adjust velocity accordingly.
+            hitposition = (bat.position.y - ball.position.y) / (bat.length/3)
+            ball.velocity.y = hitposition - 2
+
     elif ball.position.x == bat2.position.x - 1 and ball.velocity.x > 0:
         if ball.position.y >= bat2.position.y and ball.position.y <= (bat2.position.y + bat2.length):
             ball.velocity.x *= -1
@@ -125,22 +141,24 @@ score1 = Score(29, 2, 0)
 score2 = Score(49, 2, 0)
 
 # Which player is serving/ last served
-PLAYER_SERVE = 1
-GameState = constants.STATE_IN_PLAY
+player_serving = 1
+game_state = constants.STATE_IN_PLAY
+
+serves = constants.SERVES
 
 inputs.init()
 LEDDisplay.init()
 
 while True:
-    inputs.update(bat1, bat2, GameState)
+    inputs.update(bat1, bat2, game_state)
 
-    if GameState == constants.STATE_IN_PLAY:
+    if game_state == constants.STATE_IN_PLAY:
         update_game()
 
-    elif GameState == constants.STATE_SERVE:
+    elif game_state == constants.STATE_SERVE:
         update_serve()
 
     draw()
-    LEDDisplay.update(GameState, ball.position.x)
+    LEDDisplay.update(game_state, ball.position.x)
 	#LEDboard.updateboard(GameState, ball.position.x)
     time.sleep(0.05)

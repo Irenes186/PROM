@@ -11,9 +11,9 @@ GPIO.setup(constants.PINS["7-Seg Enable"], GPIO.OUT)
 
 
 def enable(value):
-    if (value % 2 == 0):
+    if (int(value / 2) % 2 == 1):
         GPIO.output(constants.PINS["7-Seg High"], True)
-    if ((value - 1) % 2 == 0):
+    if (value % 2 == 1):
         GPIO.output(constants.PINS["7-Seg Low"], True)
 
     GPIO.output(constants.PINS["7-Seg Enable"], True)

@@ -13,5 +13,5 @@ def printHardwareDebugHeader():
     serialprint.print_at(9, 1, "|----------------------------------|", CONSOLE=True)
 
 def printHardwareDisplay(aval, a1, a2, apos, asize, bval, b1, b2, bpos, bsize):
-    serialprint.print_at(4, 1, "|  " + str(aval).rjust(3) + "% |  " + str(a1) + " |  " + str(a2) + " | " + str(apos).rjust(3) + "/24  | " + str(asize).rjust(3) + "  |", CONSOLE=True)
-    serialprint.print_at(8, 1, "|  " + str(bval).rjust(3) + "% |  " + str(b1) + " |  " + str(b2) + " | " + str(bpos).rjust(3) + "/24  | " + str(bsize).rjust(3) + "  |", CONSOLE=True)
+    serialprint.print_at(4, 1, "|  " + str(aval).rjust(3) + "% |  " + str(a1) + " |  " + str(a2) + " | " + str(apos).rjust(3) + "/" + str(20-asize).ljust(2) + "  | " + str(asize).rjust(3) + "  |", CONSOLE=True)
+    serialprint.print_at(8, 1, "|  " + str(bval).rjust(3) + "% |  " + str(b1) + " |  " + str(b2) + " | " + str(bpos).rjust(3) + "/" + str(20-bsize).ljust(2)+ "  | " + str(bsize).rjust(3) + "  |", CONSOLE=True)
