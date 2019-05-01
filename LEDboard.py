@@ -1,20 +1,14 @@
 import time
 import RPi.GPIO as GPIO
+import smbus
 
-#I2C_ADDR = [0x10, 0x11, 0x12, 0x14, 0x16, 0x17, 0x19, 0x20]
-#LED_ON = 0x00
-#LED_OFF = 0xFF
-#bus = smbus.SMBus(1)
+LED_ON = 0x00
+LED_OFF = 0xFF
+bus = smbus.SMBus(1)
+  
+bus.write_byte(0x38, 0xF7)
+time.sleep(1)
 
-GPIO.setwarnings(False) #disable runtime warnings
-GPIO.setmode(GPIO.BCM) #use Broadcom GPIO names
-GPIO.setup(10, GPIO.OUT) #set pin 10 as output
-
-while True: #infinite loop
-	GPIO.output(10, True) #set pin 10 high
-	time.sleep(0.5) #wait 1/2 sec
-	GPIO.output(10, False) #set pin 10 low
-	time.sleep(0.5) #wait 1/2 sec
 
   
 def updateBoard(position):
