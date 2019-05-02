@@ -16,7 +16,7 @@ class Bat:
     def __init__(self, xpos, length):
         self.position = Point(xpos, 10)
         self.length = length
-        
+
     def draw(self, colour):
         serialprint.setColor(constants.COLOURS["Reset"])
         for y in range(self.position.y):
@@ -55,17 +55,17 @@ class Score:
                     serialprint.setColor(constants.COLOURS["Reset"])
 
                 serialprint.print_at(self.position.y + y, self.position.x + x, " ")
-         
-class Ball:   
+
+class Ball:
     def __init__(self, x, y):
         self.lastposition = Point(x, y)
         self.position = Point(x, y)
         self.velocity = Point(2, 1)
 
-    def erase(self):  
+    def erase(self):
         serialprint.print_at(self.lastposition.y, self.lastposition.x, " ")
-    def draw(self, colour):
-        serialprint.setColor(colour)
+    def draw(self):
+        #serialprint.setColor(colour)
         serialprint.print_at(self.position.y, self.position.x, "o")
 
 # Moves the ball while a player is serving
@@ -82,20 +82,27 @@ def setup_serve():
         player_serving *= -1
 
     game_state = constants.STATE_SERVE
-    
+
 def update_game():
     # Collide with the sides
     if ball.position.x >= constants.COLUMNS:
         ball.velocity.x *= -1
         score1.value += 1
         PiGlow.blueWin()
-        setupServe()
+        #setupServe()
 
     elif ball.position.x <= 0:
         ball.velocity.x *= -1
         score2.value += 1
         PiGlow.redWin()
-        setup_serve()
+        #setup_serve()
+
+    ball.lastposition = Point(ball.position.x, ball.position.y)
+    ball.position.x += ball.velocity.x
+    ball.position.y += ball.velocity.y
+
+    ball.position.y = max(ball.position.y, 0)
+    ball.position.y = min(ball.position.y, constants.ROWS)
 
     # Collide with the ceiling/floor
     if ball.position.y >= constants.ROWS - 1 or ball.position.y <= 0:
@@ -106,20 +113,18 @@ def update_game():
             ball.velocity.x *= -1
 
             # Calculate which 1/3 of the bat was hit, and adjust velocity accordingly.
-            hitposition = (bat.position.y - ball.position.y) / (bat.length/3)
+            hitposition = (bat1.position.y - ball.position.y) / (bat1.length/3)
             ball.velocity.y = hitposition - 2
 
     elif ball.position.x == bat2.position.x - 1 and ball.velocity.x > 0:
         if ball.position.y >= bat2.position.y and ball.position.y <= (bat2.position.y + bat2.length):
             ball.velocity.x *= -1
 
-    ball.lastposition = Point(ball.position.x, ball.position.y)
-    ball.position.x += ball.velocity.x
-    ball.position.y += ball.velocity.y
-
 
 def draw():
-    ball.erase()
+
+    serialprint.setColor(constants.COLOURS["Net"])
+    net.draw()
 
     bat1.draw(constants.COLOURS["BlueBat"])
     score1.draw(constants.COLOURS["BlueScore"])
@@ -127,12 +132,13 @@ def draw():
     bat2.draw(constants.COLOURS["RedBat"])
     score2.draw(constants.COLOURS["RedScore"])
 
+
     serialprint.setColor(constants.COLOURS["Reset"])
-    net.draw()
+    ball.erase()
     ball.draw()
 
 
-bat1 = Bat(3, 3)
+bat1 = Bat(3, 6)
 bat2 = Bat(77, 3)
 net = Net(int(ceil(constants.COLUMNS / 2)), constants.ROWS + 1)
 ball = Ball(40 , 6)
@@ -144,7 +150,7 @@ score2 = Score(49, 2, 0)
 player_serving = 1
 game_state = constants.STATE_IN_PLAY
 
-serves = constants.SERVES
+servesremaining = constants.SERVES
 
 LEDDisplay.init()
 
