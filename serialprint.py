@@ -12,7 +12,7 @@ if serialPort.isOpen() == False:
 serialPort.write("\033[2J")
 
 # Hide the cursor
-serialPort.write("\033[25l")
+serialPort.write("\033[?25l")
 
 # "\033[y;xH" moves the cursor to row y col x"
 def print_at(r, c, s):
