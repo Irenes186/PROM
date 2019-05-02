@@ -146,7 +146,6 @@ game_state = constants.STATE_IN_PLAY
 
 serves = constants.SERVES
 
-inputs.init()
 LEDDisplay.init()
 
 while True:

@@ -8,9 +8,6 @@ I2CADDR = 0x21
 CMD_CODE = 0x10	# identify this from the data sheet
 bus = smbus.SMBus(1)
 
-def init():
-    debugdisplay.printHardwareDebugHeader()
-
 def convertToPosition(number):
 	val = (number-950)/159
 	val = max(0, val)

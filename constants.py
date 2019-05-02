@@ -5,6 +5,10 @@ ROWS = 24
 COLUMNS = 80 
 SERVES = 5
 
+
+NOTES = { 
+    }
+
 COLOURS = {
     "BlueBat": 46,
     "BlueScore": 34,

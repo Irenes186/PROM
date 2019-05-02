@@ -12,7 +12,6 @@ GPIO.setup(constants.PINS["Buzzer"], OUTPUT)
 
 buzzerPin = GPIO.PWM(constants.PINS["Buzzer"], 10)
   
-
 def playSequence(sequence):
     buzzerPin.stop()
     if len(sequence) > 0:
