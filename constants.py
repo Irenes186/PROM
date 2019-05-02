@@ -1,19 +1,24 @@
 STATE_IN_PLAY = 0
 STATE_SERVE = 1
 
-ROWS = 24 
-COLUMNS = 80 
+ROWS = 24
+COLUMNS = 80
 SERVES = 5
 
+#########ADC#########
 
-NOTES = { 
-    }
+ADC_lowend = 950
+ADC_highend = 3610
+ADC_levelsrequired = 22
+
+#########ADC#########
 
 COLOURS = {
     "BlueBat": 46,
-    "BlueScore": 34,
+    "BlueScore": 104,
     "RedBat": 41,
-    "RedScore": 30,
+    "RedScore": 101,
+    "Net" : 92,
     "Reset": 0
 }
 
