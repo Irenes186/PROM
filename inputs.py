@@ -10,7 +10,7 @@ bus = smbus.SMBus(1)
 
 def init():
 	print("Init")
-    #debugdisplay.printHardwareDebugHeader()
+	debugdisplay.printHardwareDebugHeader()
 
 def convertToPosition(ADC_Value, bat_size):
 	ADC_Step = (constants.ADC_highend - constants.ADC_lowend)/(constants.ROWS - (bat_size - 1))
@@ -30,4 +30,4 @@ def update(bat1, bat2, GameState):
 	bat1.position.y = convertToPosition(finalVal, bat1.length)
 	#print(bat1.position.y)
 	#time.sleep(0.2)
-	#debugdisplay.printHardwareDisplay(finalVal, 0, 1, bat1.position.y, bat1.length, 3, 0, 0, bat2.position.y, bat2.length)
+	debugdisplay.printHardwareDisplay(finalVal, 0, 1, bat1.position.y, bat1.length, 3, 0, 0, bat2.position.y, bat2.length)
