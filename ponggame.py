@@ -138,7 +138,7 @@ def draw():
     ball.draw()
 
 
-bat1 = Bat(3, 6)
+bat1 = Bat(3, 3)
 bat2 = Bat(77, 3)
 net = Net(int(ceil(constants.COLUMNS / 2)), constants.ROWS + 1)
 ball = Ball(40 , 6)
@@ -153,6 +153,10 @@ game_state = constants.STATE_IN_PLAY
 servesremaining = constants.SERVES
 
 LEDDisplay.init()
+inputs.init()
+serialprint.setColor(constants.COLOURS["Reset"])
+draw()
+LEDDisplay.countdown7seg()
 
 while True:
     inputs.update(bat1, bat2, game_state)
@@ -164,6 +168,5 @@ while True:
         update_serve()
 
     draw()
-    LEDDisplay.update(game_state, ball.position.x)
-	#LEDboard.updateboard(GameState, ball.position.x)
-    time.sleep(0.05)
+    LEDDisplay.updateBoard(ball.position.x)
+    time.sleep(0.1)
