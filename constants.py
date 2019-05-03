@@ -8,7 +8,7 @@ SERVES = 5
 #########ADC#########
 
 ADC_lowend = 950
-ADC_highend = 3610
+ADC_highend = 3100
 ADC_levelsrequired = 22
 
 #########ADC#########
@@ -23,7 +23,7 @@ COLOURS = {
 }
 
 PINS = {
-    "Buzzer": 12, # Needs to be a PWM pin
+    "Buzzer": 10, # Needs to be a PWM pin
     "7-Seg Low": 0,
     "7-Seg High": 0,
     "7-Seg Enable": 0,
