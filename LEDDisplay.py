@@ -17,19 +17,20 @@ def init():
 	for i in range(0, len(pin_list)):
 		GPIO.setup(pin_list[i], GPIO.OUT)
 
-# def write7Seg(value):
-#     bus.write_byte(0x39, ((int(value / 2) % 2) * 0x10) + ((value % 2) * 0x20))
-#
-# def countdown7seg():
-#     for i in range(3, -1, -1):
-#         write7Seg(i)
-#         time.sleep(1)
+def write7Seg(value):
+    bus.write_byte(0x39, ((int(value / 2) % 2) * 0x10) + ((value % 2) * 0x20) + 0x40)
+
+def countdown7seg():
+    for i in range(3, -1, -1):
+        write7Seg(i)
+        time.sleep(1)
+        bus.write_byte(0x39, 0x00)
 
 def updateBoard(position):
     for i in range(0, len(pin_list)):
         GPIO.output(pin_list[i], False)
 
     lvl = math.floor(float(position)/10)
-    print(lvl)
+    #print(lvl)
     bus.write_byte(0x38, pins[int(lvl)])
     GPIO.output(pin_list[int(lvl)], True)
