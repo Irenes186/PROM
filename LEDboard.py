@@ -6,18 +6,12 @@ LED_ON = 0x00
 LED_OFF = 0xFF
 I2C = 0x38
 bus = smbus.SMBus(1)
-  
-bus.write_byte(0x38,LED_OFF)
-time.sleep(1)
 
-pins = [0xF1,0xF2, 0xF4, 0xF8,0x1F, 0x2F, 0x4F, 0x8F]
-  
+bus.write_byte(0x38, 0xFF)
+
+pins = [0xFE, 0xFD, 0xFB, 0xF7, 0xEF, 0xDF, 0xBF, 0x7F]
 
 def updateBoard(position):
-	#test
-    for i in range(0, len(pins)):
-        bus.write_byte(0x38, pins[i])
-	#game functionality
     if position <= 10 :
         bus.write_byte(0x38, pins[0])
     elif position > 10 and position <= 20:
