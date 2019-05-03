@@ -1,58 +1,35 @@
-#switching LEDS on and off
+import smbus
 import RPi.GPIO as GPIO
 import time
 import constants
 import math
 
+bus = smbus.SMBus(1)
+
 pin_list = [5, 6, 12, 13, 16, 19, 20, 26, 26]
+pins = [0xFE, 0xFD, 0xFB, 0xF7, 0xEF, 0xDF, 0xBF, 0x7F, 0x7F]
 
 def init():
 	print("INIT TEST!!!")
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setwarnings(False)
 
-	#to be changed with the actual value
-
-	#the following pins will be used as outputs
-
 	for i in range(0, len(pin_list)):
 		GPIO.setup(pin_list[i], GPIO.OUT)
 
+# def write7Seg(value):
+#     bus.write_byte(0x39, ((int(value / 2) % 2) * 0x10) + ((value % 2) * 0x20))
+#
+# def countdown7seg():
+#     for i in range(3, -1, -1):
+#         write7Seg(i)
+#         time.sleep(1)
 
-	#turns on a LED every 3 seconds/ 8 LEDs time
-"""for i in range(0, len(pin_list)):
-    GPIO.output(pin_list[i], Trint(round(position/10))ue)
-    time.sleep(1)
-
-    GPIO.output(pin_list[i], False)
-"""
-
-def update(GameState, position):
+def updateBoard(position):
     for i in range(0, len(pin_list)):
         GPIO.output(pin_list[i], False)
 
-	############################################################
-		
-    #position = min(79, position)
-    #LED = math.floor(float(position)/10)
-	#print(LED)
-    #GPIO.output(pin_list[int(LED)], True)
-
-	############################################################
-
-    if position <= 10 :
-        GPIO.output(pin_list[0], True)
-    elif position > 10 and position <= 20:
-        GPIO.output(pin_list[1], True)
-    elif position > 20 and position <= 30:
-        GPIO.output(pin_list[2], True)
-    elif position > 30 and position <= 40:
-        GPIO.output(pin_list[3], True)
-    elif position > 40 and position <= 50:
-        GPIO.output(pin_list[4], True)
-    elif position > 50 and position <= 60:
-        GPIO.output(pin_list[5], True)
-    elif position > 60 and position <= 70:
-        GPIO.output(pin_list[6], True)
-    else:
-        GPIO.output(pin_list[7], True)
+    lvl = math.floor(float(position)/10)
+    print(lvl)
+    bus.write_byte(0x38, pins[int(lvl)])
+    GPIO.output(pin_list[int(lvl)], True)
