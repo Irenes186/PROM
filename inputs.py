@@ -32,6 +32,4 @@ def update(bat1, bat2, GameState):
 	#print(bat1.position.y)
 	#time.sleep(0.2)
 	debugdisplay.printHardwareDisplay(finalVal, 0, 1, bat1.position.y, bat1.length, 3, 0, 0, bat2.position.y, bat2.length)
-	lvl = math.floor(float(position)/10)
-	for x in range (0, len(pins)):
-		bus.write_byte(0x38, pins[int(lvl)])
+	
