@@ -153,8 +153,8 @@ def draw():
     ball.draw()
 
 
-bat1 = Bat(3, 6)
-bat2 = Bat(77, 24)
+bat1 = Bat(3, 3)
+bat2 = Bat(77, 3)
 net = Net(int(ceil(constants.COLUMNS / 2)), constants.ROWS + 1)
 ball = Ball(40 , 6)
 
