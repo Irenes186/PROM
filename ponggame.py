@@ -3,7 +3,7 @@ import constants
 import inputs
 import LEDDisplay
 import PiGlow
-
+import random
 import time
 from math import ceil
 
@@ -110,24 +110,31 @@ def update_game():
 
     if ball.position.x == bat1.position.x + 1 and ball.velocity.x < 0:
         if ball.position.y >= bat1.position.y and ball.position.y <= (bat1.position.y + bat1.length):
-            ball.velocity.x *= -1
+            ball.velocity.x = random.randint(1,3)
 
             # Calculate which 1/3 of the bat was hit, and adjust velocity accordingly
             #hitposition = (bat1.position.y - ball.position.y) / (bat1.length/3)
             #ball.velocity.y = hitposition - 2
           
-            if ball.position.y >= bat1.position.y and ball.position.y <= bat1.position.y + bat1.length/3:
-                ball.velocity.y = -1
-            else if ball.position.y > bat1.position.y + bat1.length/3 and <= bat1.position.y + bat1.length*0.66667:
+            if ball.position.y > bat1.position.y and ball.position.y < bat1.position.y + bat1.length/3:
+                ball.velocity.y = 1
+
+            elif ball.position.y > bat1.position.y + bat1.length/3 and ball.position.y < bat1.position.y + bat1.length*2/3:
                 ball.velocity.y = 0
             else:
+                ball.velocity.y = -1
+
+            if ball.position.y > bat2.position.y and ball.position.y < bat2.position.y + bat2.length/3:
                 ball.velocity.y = 1
+            elif ball.position.y > bat2.position.y + bat2.length/3 and ball.position.y < bat2.position.y + bat2.length*2/3:
+                ball.velocity.y = 0
+            else:
+                ball.velocity.y = -1
             
 
     elif ball.position.x == bat2.position.x - 1 and ball.velocity.x > 0:
         if ball.position.y >= bat2.position.y and ball.position.y <= (bat2.position.y + bat2.length):
-            ball.velocity.x *= -1
-
+            ball.velocity.x *= -random.randint(1,3)
 
 def draw():
 
@@ -146,8 +153,8 @@ def draw():
     ball.draw()
 
 
-bat1 = Bat(3, 3)
-bat2 = Bat(77, 3)
+bat1 = Bat(3, 6)
+bat2 = Bat(77, 24)
 net = Net(int(ceil(constants.COLUMNS / 2)), constants.ROWS + 1)
 ball = Ball(40 , 6)
 
