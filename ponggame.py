@@ -118,7 +118,7 @@ def update_game():
           
             if ball.position.y >= bat1.position.y and ball.position.y <= bat1.position.y + bat1.length/3:
                 ball.velocity.y = -1
-            else if ball.position.y > bat1.position.y + bat1.length/3 and <= bat1.position.y + (bat1.length/3)*2:
+            else if ball.position.y > bat1.position.y + bat1.length/3 and <= bat1.position.y + bat1.length*0.66667:
                 ball.velocity.y = 0
             else:
                 ball.velocity.y = 1
