@@ -21,6 +21,7 @@ part7 = [ [72, 12], [20, 24], [67, 12], [20, 24], [64, 24], [69, 16], [71, 16], 
 
 X = [part1, part2, part2, part3, part3, part5, part2, part2, part6, part6, part5, part6, part7]
 
+
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
@@ -37,10 +38,11 @@ def playSequence(sequence):
         buzzerPin.start(50)
         t = Timer(note[1], playSequence, args=[sequence])
         t.start()
-
+         
 for part in X:
-    for i in range(0, len(X)):
-        X[i][0] = 27.5*2**(X[i][0] -21)/12)
-        X[i][1] = X[i][1]/1000
+    for sequence in part:
+        X[sequence][0] = 27.5*2**(X[sequence][0] -21)/12)
+        X[sequence][1] = X[sequence][1]/1000
 
 playSequence(X)
+
