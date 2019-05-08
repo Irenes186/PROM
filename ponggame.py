@@ -5,6 +5,7 @@ import LEDDisplay
 import PiGlow
 import random
 import time
+import Buzzer
 from math import ceil
 
 class Point:
@@ -89,12 +90,14 @@ def update_game():
         ball.velocity.x *= -1
         score1.value += 1
         PiGlow.blueWin()
+        playSequence([[440, 0.4],[0.1,0.15],[440, 0.4]])
         #setupServe()
 
     elif ball.position.x <= 0:
         ball.velocity.x *= -1
         score2.value += 1
         PiGlow.redWin()
+        playSequence([[440, 0.4],[0.1,0.15],[440, 0.4]])
         #setup_serve()
 
     ball.lastposition = Point(ball.position.x, ball.position.y)
