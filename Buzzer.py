@@ -43,6 +43,7 @@ def playSequence(sequence):
 for sequence in range(0, len(Y)) :
     Y[sequence][0] = (float) (2**((Y[sequence][0] -21)/12))*27.5
     Y[sequence][1] =   Y[sequence][1]/10
-
-playSequence(Y)
+    
+    
+playSequence([[440, 0.3],[0,0.3],[440, 0.3]])
 
