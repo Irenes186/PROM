@@ -42,5 +42,5 @@ for i in range(0, len(X)):
     X[i][0] = 27.5*2**(X[i][0] -21)/12)
     X[i][1] = X[i][1]/1000
          
-playSequence(X[i][0],  X[i][1])
+playSequence(X)
     
