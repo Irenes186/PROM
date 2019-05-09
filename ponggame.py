@@ -202,7 +202,7 @@ draw()
 LEDDisplay.countdown7seg()
 victory()
 
-while True:
+while is_winner == False:
     inputs.update(bat1, bat2, game_state)
 
     if game_state == constants.STATE_IN_PLAY:
