@@ -121,7 +121,7 @@ def update_game():
             # Calculate which 1/3 of the bat was hit, and adjust velocity accordingly
             #hitposition = (bat1.position.y - ball.position.y) / (bat1.length/3)
             #ball.velocity.y = hitposition - 2
-          
+
             if ball.position.y > bat1.position.y and ball.position.y < bat1.position.y + bat1.length/3:
                 ball.velocity.y = 1
 
@@ -129,11 +129,11 @@ def update_game():
                 ball.velocity.y = 0
             else:
                 ball.velocity.y = -1
-            
+
 
     elif ball.position.x == bat2.position.x - 1 and ball.velocity.x > 0:
         if ball.position.y >= bat2.position.y and ball.position.y <= (bat2.position.y + bat2.length):
-            ball.velocity.x *= -random.randint(1,3)
+            ball.velocity.x = -random.randint(1,3)
 	    Buzzer.playTone(constants.touch_bat_red, 0.25)
 
 	    if ball.position.y > bat2.position.y and ball.position.y < bat2.position.y + bat2.length/3:
@@ -159,24 +159,24 @@ def draw():
     ball.erase()
     ball.draw()
 
-def victory():
-	if score1.val == 10:
+def checkWinner():
+    if score1.value == 10:
 		#printing function
 		message = constants.winner[0]
 		is_winner = True
-	elif score2.val ==10:
+    elif score2.value ==10:
 		#printing function
 		message = constants.winner[1]
 		is_winner = True
-		
-if is_winner:	
-     for y in range(5):
-         for x in range(message.length[0]):
-              if constants.DIGITS[self.value][y][x] == "X":
-                  serialprint.setColor(colour)
-               else:
-                 serialprint.setColor(constants.COLOURS["Reset"])
-               serialprint.print_at(self.position.y + y, self.position.x + x, " ")
+
+    if (is_winner):
+         for y in range(5):
+             for x in range(message.length[0]):
+                  if constants.DIGITS[self.value][y][x] == "X":
+                      serialprint.setColor(colour)
+                  else:
+                       serialprint.setColor(constants.COLOURS["Reset"])
+                  serialprint.print_at(self.position.y + y, self.position.x + x, " ")
 
 
 bat1 = Bat(3, 3)
@@ -199,8 +199,8 @@ LEDDisplay.init()
 inputs.init()
 serialprint.setColor(constants.COLOURS["Reset"])
 draw()
-LEDDisplay.countdown7seg()
-victory()
+#LEDDisplay.countdown7seg()
+
 
 while is_winner == False:
     inputs.update(bat1, bat2, game_state)
@@ -212,5 +212,6 @@ while is_winner == False:
         update_serve()
 
     draw()
+    #checkWinner()
     LEDDisplay.updateBoard(ball.position.x)
-    time.sleep(0.1)
+    time.sleep(0.15)
