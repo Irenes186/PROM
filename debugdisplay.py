@@ -1,6 +1,6 @@
 import serialprint
 
-def printHardwareDebugHeader(aval, a1, a2, apos, asize, bval, b1, b2, bpos, bsize):
+def printHardwareDebugHeader():
     print("\033[2J")
     serialprint.print_at(1, 1, "Diagnostic Information:", CONSOLE=True)
     serialprint.print_at(2, 1, "| A RAW ADC | A1 | A2 | Bat Pos | Size |", CONSOLE=True)
