@@ -162,14 +162,29 @@ def draw():
 def victory():
 	if score1.val == 10:
 		#printing function
+		message = constants.winner[0]
+		is_winner = True
 	elif score2.val ==10:
 		#printing function
+		message = constants.winner[1]
+		is_winner = True
+		
+if is_winner:	
+     for y in range(5):
+         for x in range(message.length[0]):
+              if constants.DIGITS[self.value][y][x] == "X":
+                  serialprint.setColor(colour)
+               else:
+                 serialprint.setColor(constants.COLOURS["Reset"])
+               serialprint.print_at(self.position.y + y, self.position.x + x, " ")
 
 
 bat1 = Bat(3, 3)
 bat2 = Bat(77, 3)
 net = Net(int(ceil(constants.COLUMNS / 2)), constants.ROWS + 1)
 ball = Ball(40 , 6)
+
+is_winner = False
 
 score1 = Score(29, 2, 0)
 score2 = Score(49, 2, 0)
