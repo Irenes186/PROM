@@ -160,6 +160,10 @@ def draw():
     ball.draw()
 
 def victory():
+	if score1.val == 10:
+		#printing function
+	elif score2.val ==10:
+		#printing function
 
 
 bat1 = Bat(3, 3)
@@ -181,6 +185,7 @@ inputs.init()
 serialprint.setColor(constants.COLOURS["Reset"])
 draw()
 LEDDisplay.countdown7seg()
+victory()
 
 while True:
     inputs.update(bat1, bat2, game_state)
