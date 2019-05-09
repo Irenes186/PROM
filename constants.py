@@ -5,6 +5,14 @@ ROWS = 24
 COLUMNS = 80
 SERVES = 5
 
+
+#######SOUNDS#########
+winner = 850
+up_down = 440
+left_right = 330
+touch_bat_blue = 600
+touch_bat_red = 700
+
 #########ADC#########
 
 ADC_lowend = 950
