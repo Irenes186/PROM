@@ -159,6 +159,8 @@ def draw():
     ball.erase()
     ball.draw()
 
+def victory():
+
 
 bat1 = Bat(3, 3)
 bat2 = Bat(77, 3)
