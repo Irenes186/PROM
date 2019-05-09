@@ -3,11 +3,12 @@ import debugdisplay
 import platform
 import smbus
 import time
+import serialprint
 
 pins = [0xFE, 0xFD, 0xFB, 0xF7]
 I2CADDR = 0x21
 CMD_CODE = 0x10	# identify this from the data sheet
-I2C_ADDR_1 = 0x20
+I2C_ADC_ADDR = 0x22
 PORT_ON = 0xFF
 bus = smbus.SMBus(1)
 
@@ -36,19 +37,25 @@ def update(bat1, bat2, GameState):
 	bat1.position.y = convertToPosition(finalVal, bat1.length)
 	#print(bat1.position.y)
 	#time.sleep(0.2)
-	debugdisplay.printHardwareDisplay(finalVal, 0, 1, bat1.position.y, bat1.length, 3, 0, 0, bat2.position.y, bat2.length)
-	
-	
-bus.write_byte(I2C_ADDR_1, PORT_ON )
 
-A= bus.read_byte(I2C_ADDR_1, pin_list[])
-B= bus.read_byte(I2C_ADDR_1, pin_list[])
-C= bus.read_byte( I2C_ADDR_1, pin_list[]) 
-D= bus.read_byte( I2C_ADDR_1, pin_list[])
-E= bus.read_byte( I2C_ADDR_1, pin_list[])
-F= bus.read_byte( I2C_ADDR_1, pin_list[])
-G= bus.read_byte( I2C_ADDR_1, pin_list[])
-H= bus.read_byte( I2C_ADDR_1, pin_list[])
+	########################Hardware_ADC###########################
 
-result = A*1 + B*2 + C*4 + D*8 + E*16 + F*32 + G*64 + H*128
-	
+	bus.write_byte(I2C_ADC_ADDR, PORT_ON )
+	readData = bus.read_byte(I2C_ADC_ADDR)
+	bat2.position.y = readData - 222
+	bat2.position.y = max(bat2.position.y, 0)
+	bat2.position.y = min(bat2.position.y, 24-bat2.length)
+
+	# A= bus.read_byte(I2C_ADC_ADDR, pin_list[])
+	# B= bus.read_byte(I2C_ADC_ADDR, pin_list[])
+	# C= bus.read_byte( I2C_ADC_ADDR, pin_list[])
+	# D= bus.read_byte( I2C_ADC_ADDR, pin_list[])
+	# E= bus.read_byte( I2C_ADC_ADDR, pin_list[])
+	# F= bus.read_byte( I2C_ADC_ADDR, pin_list[])
+	# G= bus.read_byte( I2C_ADC_ADDR, pin_list[])
+	# H= bus.read_byte( I2C_ADC_ADDR, pin_list[])
+	#result = A*1 + B*2 + C*4 + D*8 + E*16 + F*32 + G*64 + H*128
+
+	######################################################
+
+	debugdisplay.printHardwareDisplay(finalVal, 0, 1, bat1.position.y, bat1.length, readData, 0, 0, bat2.position.y, bat2.length)
