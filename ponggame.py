@@ -90,14 +90,14 @@ def update_game():
         ball.velocity.x *= -1
         score1.value += 1
         PiGlow.blueWin()
-        Buzzer.playSequence([[440, 0.4],[0.1,0.15],[440, 0.4]])
+        Buzzer.playTone(440, 0.1)
         #setupServe()
 
     elif ball.position.x <= 0:
         ball.velocity.x *= -1
         score2.value += 1
         PiGlow.redWin()
-        Buzzer.playSequence([[440, 0.4],[0.1,0.15],[440, 0.4]])
+        Buzzer.playTone(440, 0.1)
         #setup_serve()
 
     ball.lastposition = Point(ball.position.x, ball.position.y)
@@ -110,13 +110,13 @@ def update_game():
     # Collide with the ceiling/floor
     if ball.position.y >= constants.ROWS - 1 or ball.position.y <= 0:
         ball.velocity.y *= -1
-	Buzzer.playSequence([[350, 0.2],[440,0.15],[350, 0.15]])
+	Buzzer.playTone(350, 0.2)
 
 
     if ball.position.x == bat1.position.x + 1 and ball.velocity.x < 0:
         if ball.position.y >= bat1.position.y and ball.position.y <= (bat1.position.y + bat1.length):
             ball.velocity.x = random.randint(1,3)
-	    Buzzer.playSequence([[200, 0.2]])
+            Buzzer.playTone(220, 0.2)
 
             # Calculate which 1/3 of the bat was hit, and adjust velocity accordingly
             #hitposition = (bat1.position.y - ball.position.y) / (bat1.length/3)
@@ -134,7 +134,7 @@ def update_game():
     elif ball.position.x == bat2.position.x - 1 and ball.velocity.x > 0:
         if ball.position.y >= bat2.position.y and ball.position.y <= (bat2.position.y + bat2.length):
             ball.velocity.x *= -random.randint(1,3)
-	    Buzzer.playSequence([[200, 0.2]])
+	    Buzzer.playTone(220, 0.2)
 
 	    if ball.position.y > bat2.position.y and ball.position.y < bat2.position.y + bat2.length/3:
                 ball.velocity.y = 1
