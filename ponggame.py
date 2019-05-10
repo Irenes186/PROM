@@ -44,7 +44,7 @@ class Net:
         self.length = length
 
      def draw(self):
-        for y in range(0, self.length, 4):
+        for y in range(1, self.length, 4):
             serialprint.print_at(y,   self.x, "|")
             serialprint.print_at(y+1, self.x, "|")
 
@@ -225,7 +225,7 @@ def checkWinner():
 
 bat1 = Bat(3, 6)
 bat2 = Bat(77, 6)
-net = Net(int(ceil(constants.COLUMNS / 2)), constants.ROWS + 1)
+net = Net(int(ceil(constants.COLUMNS / 2)), constants.ROWS)
 ball = Ball(40 , 6)
 score1 = Score(29, 2, 0)
 score2 = Score(49, 2, 0)
