@@ -4,6 +4,7 @@ from PyGlow import PyGlow
 pyglow = PyGlow()
 	
 def blueWin():
+	time.sleep(0.5)
 	for i in range(0, 5):
 		pyglow.color("white", 50)
 		pyglow.color("blue", 200)
@@ -14,6 +15,7 @@ def blueWin():
 		time.sleep(0.15)
 
 def redWin():
+	time.sleep(0.5)
 	for i in range(0, 5):
 		pyglow.color("white", 50)
 		pyglow.color("orange", 100)
