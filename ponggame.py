@@ -54,12 +54,12 @@ class Score:
         self.value = val
 
     def draw(self, colour):
-        self.value = abs(self.value % 10)
+        printval = abs(self.value % 10)
         serialprint.setColor(colour)
 
         for y in range(5):
             for x in range(3):
-                if constants.DIGITS[self.value][y][x] == "X":
+                if constants.DIGITS[printval][y][x] == "X":
                     serialprint.print_at(self.position.y + y, self.position.x + x, " ")
 
 class Ball:
@@ -92,12 +92,12 @@ def update_serve():
         ball.lastposition = Point(ball.position.x, ball.position.y)
         ball.position.x = bat1.position.x + 1
         ball.position.y = int(bat1.position.y + ceil(bat1.length / 2))
-        ball.velocity = Point(1, 0)
+        ball.velocity = Point(2, 0)
     elif player_serving == -1:
         ball.lastposition = Point(ball.position.x, ball.position.y)
         ball.position.x = bat2.position.x - 1
         ball.position.y = int(bat2.position.y + ceil(bat2.length / 2))
-        ball.velocity = Point(-1, 0)
+        ball.velocity = Point(-2, 0)
 
 def update_game():
     global servesremaining, game_state
@@ -130,12 +130,11 @@ def update_game():
 
 
     if ball.position.x == bat1.position.x + 1 and ball.velocity.x < 0:
-        if ball.position.y >= bat1.position.y and ball.position.y <= (bat1.position.y + bat1.length):
-            ball.velocity.x = random.randint(1,2)
+        if ball.position.y >= bat1.position.y and ball.position.y < (bat1.position.y + bat1.length):
+            ball.velocity.x = random.randint(1,3)
             Buzzer.playTone(constants.touch_bat_blue, 0.25)
 
             positiononbat = int(bat1.position.y - ball.position.y)
-            print("pos on bat", positiononbat)
 
             if bat1.length == 3:
                 if positiononbat == 0:
@@ -157,13 +156,12 @@ def update_game():
                     pass
 
     elif ball.position.x == bat2.position.x - 1 and ball.velocity.x > 0:
-        if ball.position.y >= bat2.position.y and ball.position.y <= (bat2.position.y + bat2.length):
+        if ball.position.y >= bat2.position.y and ball.position.y < (bat2.position.y + bat2.length):
             ball.velocity.x = -random.randint(1,2)
 
             Buzzer.playTone(constants.touch_bat_red, 0.25)
 
             positiononbat = int(bat2.position.y - ball.position.y)
-            print("pos on bat", positiononbat)
 
             if bat2.length == 3:
                 if positiononbat == 0:
@@ -202,11 +200,11 @@ def draw():
 def checkWinner():
     global is_winner
 
-    if score1.value == constants.WINNER_SCORE:
+    if score1.value >= constants.WINNER_SCORE:
 		#printing function
 		message = constants.WINNER[1]
 		is_winner = True
-    elif score2.value == constants.WINNER_SCORE:
+    elif score2.value >= constants.WINNER_SCORE:
 		#printing function
 		message = constants.WINNER[0]
 		is_winner = True
@@ -223,8 +221,8 @@ def checkWinner():
                    serialprint.print_at(9 + y, 24 + x, " ")
 
 
-bat1 = Bat(3, 6)
-bat2 = Bat(77, 6)
+bat1 = Bat(3, 3)
+bat2 = Bat(77, 3)
 net = Net(int(ceil(constants.COLUMNS / 2)), constants.ROWS)
 ball = Ball(40 , 6)
 score1 = Score(29, 2, 0)
