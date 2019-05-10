@@ -51,7 +51,7 @@ def update(bat1, bat2, state):
 	########################Hardware_ADC###########################
 	bus.write_byte(I2C_ADC_ADDR, PORT_ON )
 	readData = bus.read_byte(I2C_ADC_ADDR)
-	bat2.position.y = 222 - readData + 24
+	bat2.position.y = 215 - readData + 24
 	bat2.position.y = max(bat2.position.y, 0)
 	bat2.position.y = min(bat2.position.y, 24-bat2.length)
 
