@@ -24,3 +24,6 @@ def print_at(r, c, s, CONSOLE=False):
 
 def setColor(code):
     serialPort.write(u"\033[" + str(code) + "m")
+
+def clear():
+    serialPort.write("\033[2J")
