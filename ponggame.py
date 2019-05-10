@@ -8,6 +8,13 @@ import time
 import Buzzer
 from math import ceil
 
+# Which player is serving/ last served
+player_serving = 1
+game_state = constants.STATE_IN_PLAY
+servesremaining = constants.SERVES + 1
+
+is_winner = False
+
 class Point:
     def __init__(self, x, y):
         self.x = x
@@ -15,7 +22,7 @@ class Point:
 
 class Bat:
     def __init__(self, xpos, length):
-        self.position = Point(xpos, 10)
+        self.position = Point(xpos, 0)
         self.length = length
 
     def draw(self, colour):
@@ -48,6 +55,7 @@ class Score:
 
     def draw(self, colour):
         self.value = abs(self.value % 10)
+
         for y in range(5):
             for x in range(3):
                 if constants.DIGITS[self.value][y][x] == "X":
@@ -69,36 +77,47 @@ class Ball:
         #serialprint.setColor(colour)
         serialprint.print_at(self.position.y, self.position.x, "o")
 
-# Moves the ball while a player is serving
-def update_serve():
-    if PLAYER_SERVE == 1:
-        ball.position = Point(bat1.position.x + 1, bat1.position.y + ceil(bat1.length / 2))
-    elif PLAYER_SERVE == -1:
-        ball.position = Point(bat2.position.x - 1, bat2.position.y + ceil(bat2.length / 2))
-
 def setup_serve():
+    global servesremaining, game_state, player_serving
     servesremaining -= 1
     if servesremaining == 0:
-        servesremaining = 5
+        servesremaining = constants.SERVES
         player_serving *= -1
+
+    serialprint.clear()
 
     game_state = constants.STATE_SERVE
 
+# Moves the ball while a player is serving
+def update_serve():
+    global player_serving, ball, bat1, bat2
+    if player_serving == 1:
+        ball.lastposition = Point(ball.position.x, ball.position.y)
+        ball.position.x = bat1.position.x + 1
+        ball.position.y = int(bat1.position.y + ceil(bat1.length / 2))
+        ball.velocity = Point(1, 0)
+    elif player_serving == -1:
+        ball.lastposition = Point(ball.position.x, ball.position.y)
+        ball.position.x = bat2.position.x - 1
+        ball.position.y = int(bat2.position.y + ceil(bat2.length / 2))
+        ball.velocity = Point(-1, 0)
+
 def update_game():
+    global servesremaining, game_state
     # Collide with the sides
     if ball.position.x >= constants.COLUMNS:
         ball.velocity.x *= -1
         score1.value += 1
         PiGlow.blueWin()
         Buzzer.playTone(constants.left_right , 0.15)
-        #setupServe()
+        setup_serve()
 
     elif ball.position.x <= 0:
         ball.velocity.x *= -1
         score2.value += 1
         PiGlow.redWin()
         Buzzer.playTone(constants.left_right, 0.15)
-        #setup_serve()
+        setup_serve()
 
     ball.lastposition = Point(ball.position.x, ball.position.y)
     ball.position.x += ball.velocity.x
@@ -110,41 +129,45 @@ def update_game():
     # Collide with the ceiling/floor
     if ball.position.y >= constants.ROWS - 1 or ball.position.y <= 0:
         ball.velocity.y *= -1
-	Buzzer.playTone(constants.up_down, 0.25)
+        Buzzer.playTone(constants.up_down, 0.25)
 
 
     if ball.position.x == bat1.position.x + 1 and ball.velocity.x < 0:
         if ball.position.y >= bat1.position.y and ball.position.y <= (bat1.position.y + bat1.length):
-            ball.velocity.x = random.randint(1,3)
+            ball.velocity.x = random.randint(1,2)
             Buzzer.playTone(constants.touch_bat_blue, 0.25)
 
-            # Calculate which 1/3 of the bat was hit, and adjust velocity accordingly
-            #hitposition = (bat1.position.y - ball.position.y) / (bat1.length/3)
-            #ball.velocity.y = hitposition - 2
+            positiononbat = int(float(ball.position.y - bat1.position.y) / bat1.length * 3)
 
-            if ball.position.y > bat1.position.y and ball.position.y < bat1.position.y + bat1.length/3:
-                ball.velocity.y = 1
+            print("pos on bat", positiononbat)
 
-            elif ball.position.y > bat1.position.y + bat1.length/3 and ball.position.y < bat1.position.y + bat1.length*2/3:
-                ball.velocity.y = 0
-            else:
+            if positiononbat == 0:
                 ball.velocity.y = -1
+
+            elif positiononbat == 2:
+                ball.velocity.y = 1
+            else:
+                ball.velocity.y = 0
 
 
     elif ball.position.x == bat2.position.x - 1 and ball.velocity.x > 0:
         if ball.position.y >= bat2.position.y and ball.position.y <= (bat2.position.y + bat2.length):
-            ball.velocity.x = -random.randint(1,3)
-	    Buzzer.playTone(constants.touch_bat_red, 0.25)
+            ball.velocity.x = -random.randint(1,2)
+            Buzzer.playTone(constants.touch_bat_red, 0.25)
 
-	    if ball.position.y > bat2.position.y and ball.position.y < bat2.position.y + bat2.length/3:
-                ball.velocity.y = 1
-            elif ball.position.y > bat2.position.y + bat2.length/3 and ball.position.y < bat2.position.y + bat2.length*2/3:
-                ball.velocity.y = 0
-            else:
+            positiononbat = int(float(ball.position.y - bat2.position.y) / bat2.length * 3)
+
+            print("pos on bat", positiononbat)
+
+            if positiononbat == 0:
                 ball.velocity.y = -1
 
-def draw():
+            elif positiononbat == 2:
+                ball.velocity.y = 1
+            else:
+                ball.velocity.y = 0
 
+def draw():
     serialprint.setColor(constants.COLOURS["Net"])
     net.draw()
 
@@ -160,40 +183,35 @@ def draw():
     ball.draw()
 
 def checkWinner():
-    if score1.value == 10:
+    global is_winner
+
+    if score1.value == constants.WINNER_SCORE:
 		#printing function
-		message = constants.winner[0]
+		message = constants.WINNER[1]
 		is_winner = True
-    elif score2.value ==10:
+    elif score2.value == constants.WINNER_SCORE:
 		#printing function
-		message = constants.winner[1]
+		message = constants.WINNER[0]
 		is_winner = True
 
     if (is_winner):
-         for y in range(5):
-             for x in range(message.length[0]):
-                  if constants.DIGITS[self.value][y][x] == "X":
-                      serialprint.setColor(colour)
-                  else:
-                       serialprint.setColor(constants.COLOURS["Reset"])
-                  serialprint.print_at(self.position.y + y, self.position.x + x, " ")
+        if score1.value == constants.WINNER_SCORE:
+            serialprint.setColor(constants.COLOURS["BlueScore"])
+        else:
+            serialprint.setColor(constants.COLOURS["RedScore"])
+
+        for y in range(5):
+             for x in range(len(message[0])):
+                  if message[y][x] == "X":
+                   serialprint.print_at(9 + y, 24 + x, " ")
 
 
 bat1 = Bat(3, 3)
 bat2 = Bat(77, 3)
 net = Net(int(ceil(constants.COLUMNS / 2)), constants.ROWS + 1)
 ball = Ball(40 , 6)
-
-is_winner = False
-
 score1 = Score(29, 2, 0)
 score2 = Score(49, 2, 0)
-
-# Which player is serving/ last served
-player_serving = 1
-game_state = constants.STATE_IN_PLAY
-
-servesremaining = constants.SERVES
 
 LEDDisplay.init()
 inputs.init()
@@ -201,17 +219,20 @@ serialprint.setColor(constants.COLOURS["Reset"])
 draw()
 #LEDDisplay.countdown7seg()
 
+setup_serve()
 
 while is_winner == False:
-    inputs.update(bat1, bat2, game_state)
+    inputarr = [game_state, player_serving]
+    inputs.update(bat1, bat2, inputarr)
+    game_state = inputarr[0]
+
 
     if game_state == constants.STATE_IN_PLAY:
         update_game()
-
     elif game_state == constants.STATE_SERVE:
         update_serve()
 
     draw()
-    #checkWinner()
+    checkWinner()
     LEDDisplay.updateBoard(ball.position.x)
-    time.sleep(0.15)
+    #time.sleep(0.05)
