@@ -4,14 +4,15 @@ STATE_SERVE = 1
 ROWS = 24
 COLUMNS = 80
 SERVES = 5
+WINNER_SCORE = 3
 
 
 #######SOUNDS#########
 winner = 850
 up_down = 440
 left_right = 330
-touch_bat_blue = 600
-touch_bat_red = 700
+touch_bat_blue = 1000
+touch_bat_red = 1200
 
 #########ADC#########
 
@@ -42,18 +43,18 @@ PINS = {
 
 WINNER = [
     [
-        "  XX  XXX XX    X X X XXX X  X",
-        "  X X X   X X   X X X X X XX X",
-        "  XX  XXX X X   X X X X X X XX",
-        "  X X X   X X   X X X X X X  X",
-        "  X X XXX XX     XXX  XXX X  X"
+        "  XX  XXX XX     X   X XXX X   X",
+        "  X X X   X X    X   X X X XX  X",
+        "  XX  XXX X X    X   X X X X X X",
+        "  X X X   X X    X X X X X X  XX",
+        "  X X XXX XX     XX XX XXX X   X"
     ],
     [
-        "XX  X   X X  XXX   X X X XXX X  X",
-        "X X X   X X  X     X X X X X XX X",
-        "XX  X   X X  XXX   X X X X X X XX",
-        "X X X   X X  X     X X X X X X  X",
-        "XXX XXX XXX  XXX    XXX  XXX X  X",
+        "XXX X   X X XXX   X   X XXX X   X",
+        "X X X   X X X     X   X X X XX  X",
+        "XX  X   X X XX    X   X X X X X X",
+        "X X X   X X X     X X X X X X  XX",
+        "XXX XXX XXX XXX   XX XX XXX X   X",
     ],
     ]
 
