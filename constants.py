@@ -6,6 +6,8 @@ COLUMNS = 80
 SERVES = 5
 WINNER_SCORE = 10
 
+showcountdown = False
+randomSpeed = True
 
 #######SOUNDS#########
 winner = 850
