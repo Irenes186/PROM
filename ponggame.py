@@ -131,7 +131,11 @@ def update_game():
 
     if ball.position.x == bat1.position.x + 1 and ball.velocity.x < 0:
         if ball.position.y >= bat1.position.y and ball.position.y < (bat1.position.y + bat1.length):
-            ball.velocity.x = random.randint(1,3)
+            if constants.randomSpeed:
+                ball.velocity.x = random.randint(1,3)
+            else:
+                ball.velocity.x = 1
+
             Buzzer.playTone(constants.touch_bat_blue, 0.25)
 
             positiononbat = int(bat1.position.y - ball.position.y)
@@ -157,7 +161,10 @@ def update_game():
 
     elif ball.position.x == bat2.position.x - 1 and ball.velocity.x > 0:
         if ball.position.y >= bat2.position.y and ball.position.y < (bat2.position.y + bat2.length):
-            ball.velocity.x = -random.randint(1,2)
+            if constants.randomSpeed:
+                ball.velocity.x = -random.randint(1,3)
+            else:
+                ball.velocity.x = -1
 
             Buzzer.playTone(constants.touch_bat_red, 0.25)
 
@@ -232,7 +239,8 @@ LEDDisplay.init()
 inputs.init()
 serialprint.setColor(constants.COLOURS["Reset"])
 draw()
-#LEDDisplay.countdown7seg()
+if constants.showcountdown:
+    LEDDisplay.countdown7seg() #Three second timer
 
 setup_serve()
 
@@ -250,4 +258,120 @@ while is_winner == False:
     draw()
     checkWinner()
     LEDDisplay.updateBoard(ball.position.x)
+    #time.sleep(0.05)bat2 = Bat(77, 3)
+
+233
+
+net = Net(int(ceil(constants.COLUMNS / 2)), constants.ROWS)
+
+234
+
+ball = Ball(40 , 6)
+
+235
+
+score1 = Score(29, 2, 0)
+
+236
+
+score2 = Score(49, 2, 0)
+
+237
+
+​
+
+238
+
+LEDDisplay.init()
+
+239
+
+inputs.init()
+
+240
+
+serialprint.setColor(constants.COLOURS["Reset"])
+
+241
+
+draw()
+
+242
+
+if constants.showcountdown:
+
+243
+
+    LEDDisplay.countdown7seg() #Three second timer
+
+244
+
+​
+
+245
+
+setup_serve()
+
+246
+
+​
+
+247
+
+while is_winner == False:
+
+248
+
+    inputarr = [game_state, player_serving]
+
+249
+
+    inputs.update(bat1, bat2, inputarr)
+
+250
+
+    game_state = inputarr[0]
+
+251
+
+​
+
+252
+
+​
+
+253
+
+    if game_state == constants.STATE_IN_PLAY:
+
+254
+
+        update_game()
+
+255
+
+    elif game_state == constants.STATE_SERVE:
+
+256
+
+        update_serve()
+
+257
+
+​
+
+258
+
+    draw()
+
+259
+
+    checkWinner()
+
+260
+
+    LEDDisplay.updateBoard(ball.position.x)
+
+261
+
     #time.sleep(0.05)
